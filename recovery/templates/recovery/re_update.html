@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}수정{% endblock %}
+
+{% block content %}
+<p></p>
+<div class="container">
+    <button type="button" class="btn btn-outline-primary btn-sm"><a href="{% url 'recovery:re_board' mn=0%}">취소</a></button>
+    <a class="btn btn-primary btn-sm text-white" href="{% url 'recovery:mgt_detail' pk=recovery.id %}" role="button">입금 내역 관리</a></button>
+    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">원상회복 내역 삭제</button>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">삭제 하시겠습니까?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <a class="btn btn-danger" role="button" href="{% url 'recovery:re_delete' pk=recovery.id %}">삭제</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+</div>
+
+<p></p>
+<div class="container bg-success text-white">
+<dl class="row">
+    <dt class="col-sm-3">(반납) 차량번호</dt>
+    <dd class="col-sm-9">{{recovery.car_num}}</dd>
+    <dt class="col-sm-3">차종(모델)</dt>
+    <dd class="col-sm-9">{{recovery.car_model}}</dd>
+    <dt class="col-sm-3">반납일</dt>
+    <dd class="col-sm-9">{{recovery.car_date|date:'Y-m-d'}}</dd>
+</dl>
+</div>
+
+<p></p>
+<div class="container">
+    <form action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="update" class="btn btn-info btn-sm">
+</form>
+</div>
+{% endblock %}

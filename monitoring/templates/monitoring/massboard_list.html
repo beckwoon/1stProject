@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block title %}대량반납 현황{% endblock %}
+
+{% block content %}
+
+<p></p>
+<div class="col-md-2">
+<div class="btn-group">
+    <a href="{% url 'monitoring:add' %}" class="btn btn-info">대량반납 추가</a>
+</div>
+</div>
+<p></p>
+
+<div class="container">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">반납(예상)일</th>
+            <th scope="col">고객</th>
+            <th scope="col">차량</th>
+            <th scope="col">대수</th>
+            <th scope="col">반납(예정)지</th>
+            <th scope="col">비고</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mass in object_list %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{mass.fdate|date:'Y-m-d'}}</td>
+                <td>{{mass.cus}}</td>
+                <td>{{mass.car}}</td>
+                <td>{{mass.num}}</td>
+                <td>{{mass.spot}}</td>
+                <td>{{mass.text}}</td>
+                <td><a href="{% url 'monitoring:update' pk=mass.id %}" class="btn btn-success btn-sm">Modify</a> </td>
+                <td><a href="{% url 'monitoring:delete' pk=mass.id %}" class="btn btn-danger btn-sm">Delete</a> </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% if is_paginated %}
+<ul class="pagination justify-content-center pagination-sm">
+    {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'monitoring:mass_board' %}?page={{page_obj.previous_page_number}}" tabindex="-1">Previous</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+    {% endif %}
+
+    {% for object in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == forloop.counter %}disabled{% endif %}">
+            <a class="page-link" href="{{request.path}}?page={{forloop.counter}}">{{forloop.counter}}</a>
+        </li>
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'monitoring:mass_board' %}?page={{page_obj.next_page_number}}">Next</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+        </li>
+    {% endif %}
+</ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+
+{% block title %}반납 차량 리스트{% endblock %}
+
+{% block content %}
+{% load humanize %}
+<p></p>
+<div class="container">
+<div class="row">
+    <div class="col-md-4">
+
+            <form class="form-inline" action="{%url 'monitoring:search' %}">
+                <input class="form-control mr-sm-2" type="search" placeholder="차량번호" aria-label="Search" name="number" value="{{number}}">
+                    <button class="btn btn-outline-success my-2 my-sm-0" name="date" type="submit">검색</button>
+            </form>
+    </div>
+    <div class="col-md-4"></div>
+    <form method="post">
+        {%csrf_token%}
+        <div class="col-md-12">
+            <input type="date" name="date" placeholder="1999-01-01">
+            <button class="btn btn-secondary" type="submit">검색</button>
+        </div>
+    </form>
+    <p></p>
+</div>
+</div>
+<p></p>
+<div class="container">
+    <span class="badge badge-success">{{date|date:'Y년 m월 d일 D'}}</span>
+</div>
+<div class="container">
+<font size="2">
+<table class="table table-striped" width="100">
+    {% if datas %}
+    <thead>
+        <tr>
+            <th scope="col" width="1">#</th>
+            <th scope="col" width="100">반납(예상)일</th>
+            <th scope="col" width="100">차량번호</th>
+            <th scope="col" width="120">모델</th>
+            <th scope="col" width="100">상세모델</th>
+            <th scope="col" width="100">최초등록일</th>
+            <th scope="col" width="100">대상분류</th>
+            <th scope="col" width="100">고객명</th>
+            <th scope="col" width="100">비고</th>
+            <th scope="col" width="50">관리</th>
+        </tr>분
+    </thead>
+    <tbody>
+        {% for data in datas %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{data.a_rdate|date:'y-m-d'}}</td>
+                <td><a href="{% url 'monitoring:detail' pk=data.id %}">{{data.car_num2}}</a>
+                {% if data.fwc_3pt == "글로비스" %}
+                    <p><span class="badge badge-danger">글로비스</span></p>
+                {% endif %}
+                </td>
+                <td>{{data.car_type}}</td>
+                <td>{{data.car_model}}</td>
+                <td>{{data.car_sdate|date:'y-m-d'}}</td>
+                {% if data.cx == 0 %}
+                <td>비인증</td>
+                {% elif data.cx == 1 %}
+                <td>인증</td>
+                {% else %}
+                <td>미분류</td>
+                {% endif %}
+                <td><a class="info" href="#" id={{data.id}} data-toggle="modal" data-target="#add-{{data.id}}" >{{data.cus_name}}</a></td>
+
+                <td>{{data.text}}</td>
+                <td>
+                    <!--
+                    <select id="select">
+                        <option value>차종분류</option>
+                        <optgroup label="차종선택">
+                            {% for cartype in cartypes %}
+                            <option value>{{cartype.cartype}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+                    -->
+                    <a href="{% url 'remgt:re_cus' pk=data.id %}" class="btn btn-success btn-sm">반납관리</a>
+            </tr>
+        {% endfor %}
+
+    </tbody>
+    {% else %}
+    <thead>
+        <tr>
+            <th scope="col">반납 데이터가 없습니다. 차량을 확인해 주세요.</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="{% url 'monitoring:ban_board'%}" class="btn btn-danger btn-sm">확인</a></td>
+        </tr>
+    </tbody>
+    {% endif %}
+</table>
+</font>
+</div>
+        {% for data in datas %}
+                    <div class="modal fade" id="add-{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalScrollableTitle">{{data.cus_name}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="model-body">
+                                    {% if data.cus_ctn %}
+                                    <p> 연락처 : {{data.cus_ctn}}</p>
+                                    {% else %}
+                                    <p> 연락처 없음</p>
+                                    {% endif %}
+                                    {% if data.cus_add %}
+                                    <p> 주소1 : {{data.cus_add}}</p>
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    {% if data.cus_add2 %}
+                                    <p> 주소2 : {{data.cus_add2}}</p>
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                    <a href="{% url 'remgt:re_cus' pk=data.id %}" class="btn btn-primary">반납관리</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        {% endfor %}
+
+
+
+{% endblock %}

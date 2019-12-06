@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block title %}
+원상회복 신규등록
+{% endblock %}
+
+{% block content %}
+<p></p>
+<div class="container bg-success text-white">
+<span style="font-size:1.0em">
+<dl class="row">
+    <dt class="col-sm-3">원차량번호</dt>
+    <dd class="col-sm-9">{{data.car_num1}}</dd>
+    <dt class="col-sm-3">반납차량번호</dt>
+    <dd class="col-sm-9">{{data.car_num2}}</dd>
+    <dt class="col-sm-3">변경차량번호</dt>
+    <dd class="col-sm-9">{{data.car_num3}}</dd>
+    <dt class="col-sm-3">차종(모델)</dt>
+    <dd class="col-sm-9">{{data.car_type}}</dd>
+    <dt class="col-sm-3">세부모델</dt>
+    <dd class="col-sm-9">{{data.car_model}}</dd>
+    <dt class="col-sm-3">반납일</dt>
+    <dd class="col-sm-9">{{data.a_rdate|date:'Y-m-d'}}</dd>
+</dl>
+</span>
+</div>
+
+<p></p>
+<div class="container">
+<form class="bd-example" method="post">
+    {%csrf_token%}
+    <fieldset>
+        <legend> 원상회복 등록 </legend>
+        <p>
+            <label for="input">반납평가사</label>
+            <input type="text", name="aa" placeholder="Example input">
+            <label for="input">평가사 점수</label>
+            <select id="input" name="bb" class="col-md-1">
+                <option selected>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+            </select>
+        <p class="text-light bg-dark col-md-6">원상회복사항</p>
+        <p><a href="#" class="text-light bg-info">보험수리</a></p>
+        <p class="col-md-6">
+            <label for="input">원상회복 건수</label>
+            <input type="text" name="cc" class="col-md-2">
+            <label for="input">보험접수 건수</label>
+            <input type="text" name="dd" class="col-md-2">
+        </p>
+        <p class="col-md-6">원상회복 부위
+            <textarea class="form-control" name="ee" row="2"></textarea>
+        </p>
+        <p class="col-md-6">
+            <label for="input">보험 접수번호</label>
+            <input type="text" name="hh">
+        </p>
+        <p><a href="#" class="text-light bg-primary">일반수리</a></p>
+        <p class="col-md-6">
+            <label for="input">청구 금액</label>
+            <input type="text" name="ll">
+
+        <p class="text-dark bg-dark col-md-6">.</p>
+        <h4><p class="col-md-6"> 고객명 : {{data.cus_name}}</p></h4>
+        <p class="col-md-6">
+            <label for="input">고객 연락처</label>
+            <input type="text" name="mm">
+        </p>
+
+        <p class="col-md-6">비고
+            <textarea class="form-control" name="nn" row="3"></textarea>
+        </p>
+
+        <p class="row justify-content-md-center">
+        <!-- Button trigger modal -->
+        <a class="btn btn-outline-primary" href="{% url 'recovery:re_board' mn=0%}" role="button">취소</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+          저장
+        </button>
+        </p>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">원상회복 등록</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                신규 등록하시겠습니까?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-primary">저장</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </fieldset>
+</form>
+</div>
+<p></p>
+
+{% endblock %}

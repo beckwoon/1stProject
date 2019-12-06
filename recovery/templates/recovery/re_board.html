@@ -1,0 +1,182 @@
+{% extends "layout.html" %}
+{% block title %}
+원상회복관리
+{% endblock %}
+
+{% block content %}
+{% load humanize %}
+<p></p>
+<div class="col-md-4">
+
+        <form class="form-inline" action="{%url 'monitoring:search' %}">
+            <input class="form-control mr-sm-2" type="search" placeholder="차량번호" aria-label="Search" name="number" value="{{number}}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+        </form>
+</div>
+<p></p>
+
+{% for count in counts %}
+<p></p>
+<div class="col-md-2">
+<div class="btn-group">
+    <form method="get">
+        <button class="btn btn-outline-primary" type="submit" name="year" value="2019">2019년</button>
+    </form>
+    <form method="get">
+        <button class="btn btn-outline-primary" type="submit" name="year" value="2020">2020년</button>
+    </form>
+</div>
+<div class="btn-group">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      월
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="{% url 'recovery:re_board' mn=0%} ">전체</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=1%}">1월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=2%}">2월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=3%}">3월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=4%}">4월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=5%}">5월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=6%}">6월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=7%}">7월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=8%}">8월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=9%}">9월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=10%}">10월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=11%}">11월</a>
+      <a class="dropdown-item" href="{% url 'recovery:re_board' mn=12%}">12월</a>
+
+  </div>
+</div>
+</div>
+<p></p>
+
+
+<div id="container"></div>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+<div class="col-md-2">
+<script>
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: '{{count.year}}년 원상회복 현황'
+        },
+        xAxis: {
+            categories: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
+        },
+        series: [{
+            name: '보험수리(건)',
+            data: [{{count.m1}},{{count.m2}},{{count.m3}},{{count.m4}},{{count.m5}},{{count.m6}},{{count.m7}},{{count.m8}},{{count.m9}},{{count.m10}},{{count.m11}},{{count.m12}}]
+        }, {
+            name: '일반수리(건)',
+            data: [{{count.n1}},{{count.n2}},{{count.n3}},{{count.n4}},{{count.n5}},{{count.n6}},{{count.n7}},{{count.n8}},{{count.n9}},{{count.n10}},{{count.n11}},{{count.n12}}]
+        }]
+    });
+</script>
+</div>
+
+<p></p>
+
+<div class="container">
+<span style="font-size:1.0em">
+<dl class="row">
+    {% if mn == 0 %}
+    <dt class="col-sm-3">원상회복 발생 총 건수<p>(전체)</p></dt>
+    {% else %}
+    <dt class="col-sm-3">원상회복 발생 총 건수<p class="text-primary">( {{mn}} 월)</p></dt>
+    {% endif %}
+    <dd class="col-sm-9">
+        <dl class="row">
+          <dt class="col-sm-3">보험수리</dt>
+          <dd class="col-sm-9">{{count.rq_ex|intcomma}} 건</dd>
+
+          <dt class="col-sm-3">일반수리</dt>
+          <dd class="col-sm-9">{{count.price_ex|intcomma}} 건</dd>
+
+          <dt class="col-sm-3">(청구총액)</dt>
+          <dd class="col-sm-9">{{count.price1|intcomma}} 원 ( 평균 {{count.avg|intcomma}} 원)</dd>
+        </dl>
+    </dd>
+
+    <dt class="col-sm-3">미처리 건수</dt>
+    <dd class="col-sm-9">
+      <dl class="row">
+          <dt class="col-sm-3">보험수리</dt>
+          <dd class="col-sm-9"><p class="text-danger">{{count.out1|intcomma}} 건 </p></dd>
+
+          <dt class="col-sm-3">일반수리</dt>
+          <dd class="col-sm-9"><p class="text-danger">{{count.out2|intcomma}} 건 ({{count.price2|intcomma}} 원)</p></dd>
+
+          <dt class="col-sm-3">(미수총액)</dt>
+          <dd class="col-sm-9"><p class="text-danger">{{count.price3|intcomma}} 원</p></dd>
+
+          <dt class="col-sm-3">(미납처리 금액)</dt>
+         <dd class="col-sm-9"><p class="text-danger">{{count.price4|intcomma}} 원</p></dd>
+      </dl>
+    </dd>
+</dl>
+</span>
+</div>
+{% endfor %}
+
+<p></p>
+<div class="container">
+    <div class="alert alert-success" role="alert">
+        <strong>원상회복 미처리 데이터 리스트</strong>
+    </div>
+</div>
+<p></p>
+
+<div class="container">
+<table class="table table-striped">
+    {% if lists %}
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">(반납)차량번호</th>
+            <th scope="col">차종</th>
+            <th scope="col">반납일자</th>
+            <th scope="col">보험 건수</th>
+            <th scope="col">일반수리 청구금액</th>
+            <th scope="col">미수금액</th>
+            <th scope="col">미납처리 사항</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for list in lists %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{list.car_num}}</td>
+                <td>{{list.model}}</td>
+                <td>{{list.car_date|date:'Y-m-d'}}</td>
+                {% if list.rq_ex %}
+                <td><a class="text-danger">{{list.num}}</a></td>
+                {% else %}
+                <td><a class="text-info">No</a></td>
+                {% endif %}
+
+                <td><a class="text-danger">{{list.price|intcomma}}</a></td>
+                <td><a class="text-danger">{{list.miss|intcomma}}</a></td>
+
+
+                {% if list.prog %}
+                <td><span class="badge badge-pill badge-danger">미납처리</span></td>
+                {% else %}
+                <td><a class="text"></a></td>
+                {% endif %}
+                <td><a href="{% url 'recovery:re_detail' pk=list.car_data %}" class="btn btn-dark btn-sm">관리</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    {% endif %}
+</table>
+</div>
+
+
+
+<p></p>
+{% endblock %}

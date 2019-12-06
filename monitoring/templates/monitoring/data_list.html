@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block title %}대상 차량 리스트{% endblock %}
+
+{% block content %}
+
+<p></p>
+<div class="col-md-4">
+
+        <form class="form-inline" action="{%url 'monitoring:search' %}">
+            <input class="form-control mr-sm-2" type="search" placeholder="차량번호" aria-label="Search" name="number" value="{{number}}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+        </form>
+</div>
+<p></p>
+
+<div class="container">
+<font size="2">
+<table class="table table-striped">
+    {% if list %}
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">반납(예상)일</th>
+            <th scope="col">원차량번호</th>
+            <th scope="col">반납차량번호</th>
+            <th scope="col">변경차량번호</th>
+            <th scope="col">차종(모델)</th>
+            <th scope="col">세부모델</th>
+            <th scope="col"></th>
+            <th scope="col">원상회복대상 여부</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for car in list %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{car.a_rdate|date:'Y-m-d'}}
+                {% if car.fwc_3pt == "글로비스" %}
+                    <p><span class="badge badge-danger">글로비스</span></p>
+                {% endif %}
+                </td>
+                <td>{{car.car_num1}}</td>
+                <td>{{car.car_num2}}</td>
+                <td>{{car.car_num3}}</td>
+                <td>{{car.car_type}}</td>
+                <td>{{car.car_model}}</td>
+                <td><a href="{% url 'monitoring:detail' pk=car.id %}" class="btn btn-dark btn-sm">상세보기</a>
+                    <a href="{% url 'remgt:re_cus' pk=car.id %}" class="btn btn-success btn-sm">반납관리</a>
+                {% if car.ex %}
+                <td><span class="badge badge-secondary">대상</span> <a href="{% url 'recovery:re_detail' pk=car.id %}" class="btn btn-primary btn-sm">관리</a></td></td>
+                {% else %}
+                <td><a href="{% url 'recovery:re_create' pk=car.id %}" class="btn btn-primary btn-sm">신규등록</a></td></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+    {% else %}
+    <thead>
+        <tr>
+            <th scope="col">반납 데이터가 없습니다. 차량을 확인해 주세요.</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="{% url 'monitoring:ban_board'%}" class="btn btn-danger btn-sm">확인</a></td>
+        </tr>
+    </tbody>
+    {% endif %}
+</table>
+</font>
+</div>
+
+{% if is_paginated %}
+<ul class="pagination justify-content-center pagination-sm">
+    {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'monitoring:mass_board' %}?page={{page_obj.previous_page_number}}" tabindex="-1">Previous</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+    {% endif %}
+
+    {% for object in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == forloop.counter %}disabled{% endif %}">
+            <a class="page-link" href="{{request.path}}?page={{forloop.counter}}">{{forloop.counter}}</a>
+        </li>
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'monitoring:mass_board' %}?page={{page_obj.next_page_number}}">Next</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+        </li>
+    {% endif %}
+</ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,268 @@
+{% extends "layout.html" %}
+{% block title %}
+반납 현황
+{% endblock %}
+
+{% block content %}
+{% load humanize %}
+
+
+<p></p>
+<div class="col-md-4">
+
+        <form class="form-inline" action="{%url 'monitoring:search' %}">
+            <input class="form-control mr-sm-2" type="search" placeholder="차량번호" aria-label="Search" name="number" value="{{number}}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+        </form>
+</div>
+<p></p>
+
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<style type="text/css">
+${demo.css}
+</style>
+{% for count in counts %}
+<script type="text/javascript">
+$(function () {
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: '{{count.year}}년 반납현황'
+        },
+        xAxis: {
+            categories: [
+                '1월',
+                '2월',
+                '3월',
+                '4월',
+                '5월',
+                '6월',
+                '7월',
+                '8월',
+                '9월',
+                '10월',
+                '11월',
+                '12월',
+            ]
+        },
+        yAxis: [{
+            min: 0,
+            title: {
+                text: '반납대수'
+            }
+        }],
+        legend: {
+            shadow: false
+        },
+        tooltip: {
+            shared: true
+        },
+        plotOptions: {
+            column: {
+                grouping: false,
+                shadow: false,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: '사업계획',
+            color: 'rgba(178,197,236)',
+            data: [{{count.f1}},{{count.f2}},{{count.f3}},{{count.f4}},{{count.f5}},{{count.f6}},{{count.f7}},{{count.f8}},{{count.f9}},{{count.f10}},{{count.f11}},{{count.f12}}],
+            tooltip: {
+                valueSuffix: ' 대'
+            },
+            pointPadding: 0.1,
+            pointPlacement: 0
+        }, {
+            name: '실 반납진행',
+            color: 'rgba(39,210,59,.9)',
+            data: [{{count.m1}},{{count.m2}},{{count.m3}},{{count.m4}},{{count.m5}},{{count.m6}},{{count.m7}},{{count.m8}},{{count.m9}},{{count.m10}},{{count.m11}},{{count.m12}}],
+            tooltip: {
+                valueSuffix: ' 대'
+            },
+            pointPadding: 0.3,
+            pointPlacement: 0
+        }]
+    });
+});
+</script>
+
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<div class="col-md-4">
+<div class="btn-group">
+    <form method="get">
+        <button class="btn btn-outline-primary" type="submit" name="year" value="2019">2019년</button>
+    </form>
+    <form method="get">
+        <button class="btn btn-outline-primary" type="submit" name="year" value="2020">2020년</button>
+    </form>
+</div>
+    <div class="col-md-12 text-primary"> 반납 대수 : {{count.yearc|intcomma}} 대</div>
+</div>
+
+<div id="container" style="width: 700px; height: 400px; margin: 0 "></div>
+<p></p>
+<div class="col-md-2">
+<p class="text-left">
+    <button type="button" class="btn-xs btn-info" onclick="location.href={% url 'monitoring:mass_board' %}">
+       대량반납 현황 보기
+    </button>
+</p>
+</div>
+<div class="col-md-4">{{count.time|date:'Y년 m월 d일 D'}}</div>
+<P></P>
+
+<div class="col-md-12">
+<div class="btn-group">
+    <button type="button" class="btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{count.month}}월
+    </button>
+    <div class="col-md-12 btn btn-outline-primary"> 반납 대수 : {{count.monthc|intcomma}} 대</div>
+
+  <div class="dropdown-menu">
+      <form method="get">
+        <button class="dropdown-item" type="submit" name="month" value="1">1월</button>
+        <button class="dropdown-item" type="submit" name="month" value="2">2월</button>
+        <button class="dropdown-item" type="submit" name="month" value="3">3월</button>
+        <button class="dropdown-item" type="submit" name="month" value="4">4월</button>
+        <button class="dropdown-item" type="submit" name="month" value="5">5월</button>
+        <button class="dropdown-item" type="submit" name="month" value="6">6월</button>
+        <button class="dropdown-item" type="submit" name="month" value="7">7월</button>
+        <button class="dropdown-item" type="submit" name="month" value="8">8월</button>
+        <button class="dropdown-item" type="submit" name="month" value="9">9월</button>
+        <button class="dropdown-item" type="submit" name="month" value="10">10월</button>
+        <button class="dropdown-item" type="submit" name="month" value="11">11월</button>
+        <button class="dropdown-item" type="submit" name="month" value="12">12월</button>
+      </form>
+  </div>
+</div>
+</div>
+{% endfor %}
+{% for d in dds %}
+<div class="col-md-5">
+    <font size="3">
+    <table class="table table-bordered shadow-sm p-3 mb-5 bg-white rounded">
+        <thead>
+        <tr>
+            <th scope="col" class="text-danger text-center">일</th>
+            <th scope="col" class="text-center">월</th>
+            <th scope="col" class="text-center">화</th>
+            <th scope="col" class="text-center">수</th>
+            <th scope="col" class="text-center">목</th>
+            <th scope="col" class="text-center">금</th>
+            <th scope="col" class="text-secondary text-center">토</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% if d.d1 > 10 %}
+            <td class="font-weight-lighter text-sm-left">{{d.d1}}</td>
+            {% else %}
+            <td class="text-danger text-sm-left">{{d.d1}}</td>
+            {% endif%}
+            {% if d.d2 > 10 %}
+            <td class="font-weight-lighter text-sm-left">{{d.d2}}<p class="text-black-50 text-center">{{d.c2}}대</p></td>
+            {% else %}
+            <td class="text-sm-left">{{d.d2}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d2%}">{{d.c2}}대</a></p></td>
+            {% endif%}
+            {% if d.d3 > 10 %}
+            <td class="font-weight-lighter text-sm-left">{{d.d3}}<p class="text-black-50 text-center">{{d.c3}}대</p></td>
+            {% else %}
+            <td class="text-sm-left">{{d.d3}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d3%}">{{d.c3}}대</a></p></td>
+            {% endif%}
+            {% if d.d4 > 10 %}
+            <td class="font-weight-lighter text-sm-left">{{d.d4}}<p class="text-black-50 text-center">{{d.c4}}대</p></td>
+            {% else %}
+            <td class="text-sm-left">{{d.d4}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d4%}">{{d.c4}}대</a></p></td>
+            {% endif%}
+            {% if d.d5 > 10 %}
+            <td class="font-weight-lighter text-sm-left">{{d.d5}}<p class="text-black-50 text-center">{{d.c5}}대</p></td>
+            {% else %}
+            <td class="text-sm-left">{{d.d5}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d5%}">{{d.c5}}대</a></p></td>
+            {% endif%}
+            {% if d.d6 > 10 %}
+            <td class="font-weight-lighter text-sm-left">{{d.d6}}<p class="text-black-50 text-center">{{d.c6}}대</p></td>
+            {% else %}
+            <td class="text-sm-left">{{d.d6}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d6%}">{{d.c6}}대</a></p></td>
+            {% endif%}
+            <td class="text-secondary text-sm-left">{{d.d7}}</td>
+        </tr>
+        <tr>
+            <td class="text-danger text-sm-left">{{d.d8}}</td>
+            <td class="text-sm-left">{{d.d9}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d9%}">{{d.c9}}대</a></p></td>
+            <td class="text-sm-left">{{d.d10}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d10%}">{{d.c10}}대</a></p></td>
+            <td class="text-sm-left">{{d.d11}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d11%}">{{d.c11}}대</a></p></td>
+            <td class="text-sm-left">{{d.d12}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d12%}">{{d.c12}}대</a></p></td>
+            <td class="text-sm-left">{{d.d13}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d13%}">{{d.c13}}대</a></p></td>
+            <td class="text-secondary text-sm-left">{{d.d14}}</td>
+        </tr>
+        <tr>
+            <td class="text-danger text-sm-left">{{d.d15}}</td>
+            <td class="text-sm-left">{{d.d16}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d16%}">{{d.c16}}대</a></p></td>
+            <td class="text-sm-left">{{d.d17}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d17%}">{{d.c17}}대</a></p></td>
+            <td class="text-sm-left">{{d.d18}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d18%}">{{d.c18}}대</a></p></td>
+            <td class="text-sm-left">{{d.d19}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d19%}">{{d.c19}}대</a></p></td>
+            <td class="text-sm-left">{{d.d20}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d20%}">{{d.c20}}대</a></p></td>
+            <td class="text-secondary text-sm-left">{{d.d21}}</td>
+        </tr>
+        <tr>
+            <td class="text-danger text-sm-left">{{d.d22}}</td>
+            <td class="text-sm-left">{{d.d23}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d23%}">{{d.c23}}대</a></p></td>
+            <td class="text-sm-left">{{d.d24}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d24%}">{{d.c24}}대</a></p></td>
+            <td class="text-sm-left">{{d.d25}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d25%}">{{d.c25}}대</a></p></td>
+            <td class="text-sm-left">{{d.d26}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d26%}">{{d.c26}}대</a></p></td>
+            <td class="text-sm-left">{{d.d27}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d27%}">{{d.c27}}대</a></p></td>
+            <td class="text-secondary text-sm-left">{{d.d28}}</td>
+        </tr>
+        <tr>
+            {% if d.d29 %}
+            <td class="text-danger text-sm-left">{{d.d29}}</td>
+            {% else %}
+            <td class="text-danger text-sm-left"></td>
+            {% endif %}
+            {% if d.d30 %}
+            <td class="text-sm-left">{{d.d30}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d30%}">{{d.c30}}대</a></p></td>
+            {% endif %}
+            {% if d.d31 %}
+            <td class="text-sm-left">{{d.d31}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d31%}">{{d.c31}}대</a></p></td>
+            {% else %}
+            <td class="text-danger text-sm-left"></td>
+            {% endif %}
+            {% if d.d32 %}
+            <td class="text-sm-left">{{d.d32}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d32%}">{{d.c32}}대</a></p></td>
+            {% else %}
+            <td class="text-danger text-sm-left"></td>
+            {% endif %}
+            {% if d.d33 %}
+            <td class="text-sm-left">{{d.d33}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d33%}">{{d.c33}}대</a></p></td>
+            {% else %}
+            <td class="text-danger text-sm-left"></td>
+            {% endif %}
+            {% if d.d34 %}
+            <td class="text-sm-left">{{d.d34}}<p class="text-center"><a href="{% url 'remgt:remgt_board' year=d.year month=d.month day=d.d34%}">{{d.c34}}대</a></p></td>
+            {% else %}
+            <td class="text-danger text-sm-left"></td>
+            {% endif %}
+            {% if d.d35 %}
+            <td class="text-secondary text-sm-left">{{d.d35}}</td>
+            {% else %}
+            <td class="text-danger text-sm-left"></td>
+            {% endif %}
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+<p></p>
+
+{% endfor %}
+<p></p>
+{% endblock %}
+

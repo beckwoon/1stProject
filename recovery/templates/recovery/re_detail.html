@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block title %}수정{% endblock %}
+
+{% block content %}
+{% load humanize %}
+<p></p>
+<div class="container">
+<div class="col-md-6 alert alert-danger" role="alert">원상회복 관리
+        <a class="btn btn-outline-danger btn-sm" href="{% url 'recovery:re_update' pk=data.id%}" role="button">수정</a>
+</div>
+<p></p>
+
+
+<p></p>
+<div class="container">
+<dl class="row">
+    <dt class="col-sm-3">(반납) 차량번호</dt>
+    <dd class="col-sm-9">{{data.car_num}}</dd>
+    <dt class="col-sm-3">차종(모델)</dt>
+    <dd class="col-sm-9">{{data.car_model}}</dd>
+    <dt class="col-sm-3">반납일</dt>
+    <dd class="col-sm-9">{{data.car_date|date:'Y-m-d'}}</dd>
+</dl>
+</div>
+
+<p></p>
+<div class="container">
+<dl class="row">
+    <dt class="col-sm-3">원상회복 부위</dt>
+    <dd class="col-sm-9">{{data.re_part}}</dd>
+    <dt class="col-sm-3">보험접수 유/무</dt>
+    {% if data.rq_ex is True %}
+    <dd class="col-sm-9 text-danger">Yes</dd>
+    <dt class="col-sm-3">보험접수번호</dt>
+    <dd class="col-sm-9">{{data.rq_number}}</dd>
+    {% else %}
+    <dd class="col-sm-9">No</dd>
+    {% endif %}
+</dl>
+</div>
+<div class="container">
+<dl class="row">
+    <dt class="col-sm-3">일반수리 유/무</dt>
+    {% if data.price_ex is True %}
+    <dd class="col-sm-9 text-danger">Yes</dd>
+    <dt class="col-sm-3">청구 금액 <a class="text-danger"> (미수금액)</a></dt>
+    <dd class="col-sm-9">{{data.rq_price|intcomma}}
+        {% if data3.miss is 0 %}
+        <a class="text-danger">(No)</a>
+        {% else %}
+        <a class="text-danger">({{data3.miss|intcomma}})</a>
+        {% endif %}
+    </dd>
+
+    <dt class="col-sm-3"></dt>
+        {% if data.prog is True %}
+        <dd class="badge badge-pill badge-danger">미납처리</dd>
+        {% endif %}
+    {% else %}
+    <dd class="col-sm-9">No</dd>
+    {% endif %}
+</dl>
+</div>
+{% if data.outstanding1 is True %}
+<div class="container">
+<dl class="row">
+    <dt class="col-sm-3 badge badge-pill badge-danger">보험접수 미처리</dt>
+</dl>
+</div>
+{% endif %}
+{% if data.outstanding2 is True %}
+<div class="container">
+<dl class="row">
+    <a href="{% url 'recovery:mgt_detail' pk=data.id %}" class="col-sm-3 badge badge-pill badge-info">일반수리 미처리(입금내역관리)</a>
+</dl>
+</div>
+{% endif %}
+
+<div class="container">
+<dl class="row">
+    <dt class="col-sm-3">비고</dt>
+    <dd class="col-sm-9">{{data.text|linebreaksbr}}</dd>
+</dl>
+</div>
+
+{% endblock %}

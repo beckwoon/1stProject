@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}
+입금내역 수정
+{% endblock %}
+
+{% block content %}
+{% load humanize %}
+<p></p>
+<div class="container">
+<div class="col-md-6 alert alert-danger">
+    <h4>입금내역 수정</h4>
+</div>
+</div>
+<p></p>
+<div class="container">
+<dl class="row">
+    <dt class="col-sm-3">(반납) 차량번호</dt>
+    <dd class="col-sm-9">{{recoverymgt.car_num}}</dd>
+    <dt class="col-sm-3">반납일</dt>
+    <dd class="col-sm-9">{{recoverymgt.car_date|date:'Y-m-d'}}</dd>
+</dl>
+</div>
+
+<p></p>
+<div class="container">
+<form action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="update" class="btn btn-info btn-sm">
+</form>
+</div>
+{% endblock %}

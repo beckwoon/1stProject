@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}수정{% endblock %}
+
+{% block content %}
+
+<div class="container">
+<span style="font-size:1em">
+<dl class="row">
+    <dt class="col-sm-3">고유번호</dt>
+    <dd class="col-sm-9">
+        <dl class="row">
+          <dt class="col-sm-3">차대번호</dt>
+          <dd class="col-sm-9">{{object.car_id}}</dd>
+
+          <dt class="col-sm-3">대출계약번호</dt>
+          <dd class="col-sm-9">{{object.fwc_num}}</dd>
+        </dl>
+    </dd>
+
+    <dt class="col-sm-3">차량번호</dt>
+    <dd class="col-sm-9">
+      <dl class="row">
+          <dt class="col-sm-3">최초(원)번호</dt>
+          <dd class="col-sm-9">{{object.car_num1}}</dd>
+
+          <dt class="col-sm-3">반납시점</dt>
+          <dd class="col-sm-9">{{object.car_num2}}</dd>
+
+          <dt class="col-sm-3">변경 번호</dt>
+          <dd class="col-sm-9">{{object.car_num3}}</dd>
+      </dl>
+
+    <dt class="col-sm-3">차종(모델)</dt>
+    <dd class="col-sm-9">{{object.car_type}}</dd>
+
+</dl>
+</span>
+</div>
+<p></p>
+<div class="container">
+<form action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="update" class="btn btn-info btn-sm">
+</form>
+</div>
+{% endblock %}

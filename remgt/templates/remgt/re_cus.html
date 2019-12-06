@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+
+{% block title %}수정{% endblock %}
+
+{% block content %}
+{% load humanize %}
+
+<p></p>
+<div class="container">
+<form  method="post">
+    {%csrf_token%}
+    <dl class="row">
+        <dt class="col-sm-2">반납일자</dt>
+        <dd class="col-sm-10">{{data.a_rdate|date:'Y년 m월 d일'}}</dd>
+        <dt class="col-sm-2">차량번호</dt>
+        <dd class="col-sm-4">{{data.car_num}} ( {{data.car_num3}} )</dd>
+        <dt class="col-sm-2">반납취소여부</dt>
+        <dd class="col-sm-4">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" name="cancel" id="switch" {{rdata.cancel}}>
+                <label class="custom-control-label" for="switch"></label>
+            </div>
+        </dd>
+        <dt class="col-sm-2">차종분류</dt>
+        <dd class="col-sm-4">
+            <select id="select" name="type">
+                <option>{{data.type}}</option>
+                {% for cartype in cartypes %}
+                <option>{{cartype.cartype}}</option>
+                {% endfor %}
+            </select>
+        </dd>
+        <dt class="col-sm-2">반납예정지</dt>
+        <dd class="col-sm-4"><input type="text", name="spot" value="{{rdata.spot}}" class="form-control"></dd>
+        <dt class="col-sm-2">차종(모델)</dt>
+        <dd class="col-sm-10">{{data.car_type}}</dd>
+        <dt class="col-sm-2">세부모델</dt>
+        <dd class="col-sm-10">{{data.car_model}}</dd>
+        <dt class="col-sm-2">연식</dt>
+        <dd class="col-sm-4">
+            <input type="text", name="year" value="{{data.car_year}}">
+        </dd>
+        <dt class="col-sm-6 text-dark bg-light">보험수리이력</dt>
+        <dt class="col-sm-2">최초등록일</dt>
+        <dd class="col-sm-4">
+            <input type="date", name="sdate" value="{{data.car_sdate|date:'Y-m-d'}}">
+        </dd>
+            <dt class="col-sm-2 text-primary"><내차 수리></dt>
+                <dt class="col-sm-2 text-primary">접수 건수</dt>
+                    <dd class="col-sm-2">
+                        <select id="select4" name="num1">
+                            <option>{{rdata.mynum}}</option>
+                            {% for i in range %}
+                            <option>{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </dd>
+        <dt class="col-sm-2">대상분류</dt>
+        <dd class="col-sm-4">
+            <select id="select2" name="cx">
+                <option>{{data.cx_name}}</option>
+                    <option>인증</option>
+                    <option>비인증</option>
+            </select>
+        </dd>
+            <dt class="col-sm-2"></dt>
+                <dt class="col-sm-2 text-primary">보험수리 총액</dt>
+                    <dd class="col-sm-2"><input type="text", name="mytotal" value="{{rdata.mytotal}}" class="form-control"></dd>
+        <dt class="col-sm-2">고객명</dt>
+        <dd class="col-sm-4">
+            <input type="text", name="name" value="{{data.cus_name}}" class="form-control">
+        </dd>
+            <dt class="col-sm-2"></dt>
+                <dt class="col-sm-2 text-primary">보험수리 최고액</dt>
+                    <dd class="col-sm-2"><input type="text", name="mymax" value="{{rdata.mymax}}" class="form-control"></dd>
+        <dt class="col-sm-2">고객 연락처</dt>
+        <dd class="col-sm-4">
+            <input type="text", name="ctn" value="{{data.cus_ctn}}" class="form-control">
+        </dd>
+            <dt class="col-sm-2 text-success"><타차 수리></dt>
+                <dt class="col-sm-2 text-success">접수 건수</dt>
+                    <dd class="col-sm-2">
+                        <select id="select3" name="num2">
+                            <option>{{rdata.unum}}</option>
+                            {% for i in range %}
+                            <option>{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </dd>
+        <dt class="col-sm-2">고객주소1</dt>
+        <dd class="col-sm-4">
+            <input type="text", name="add" value="{{data.cus_add}}" class="form-control">
+        </dd>
+            <dt class="col-sm-2"></dt>
+                <dt class="col-sm-2 text-success">보험수리 총액</dt>
+                    <dd class="col-sm-2"><input type="text", name="yourtotal" value="{{rdata.utotal}}" class="form-control"></dd>
+        <dt class="col-sm-2">고객주소2</dt>
+        <dd class="col-sm-4">
+            <textarea class="form-control" name="add2">{{data.cus_add2}}</textarea>
+        </dd>
+            <dt class="col-sm-2"></dt>
+                <dt class="col-sm-2 text-success">보험수리 최고액</dt>
+                    <dd class="col-sm-2"><input type="text", name="yourmax" value="{{rdata.umax}}" class="form-control"></dd>
+        <dt class="col-sm-2">비고</dt>
+        <dd class="col-sm-4">
+            <textarea class="form-control" name="text" rows="5">{{data.text}}</textarea>
+        </dd>
+        <dt class="col-sm-4"></dt>
+        <dd class="col-sm-2">
+            <p></p>
+            <a class="btn btn-outline-primary" href="{% url 'remgt:remgt_board' year=data.a_rdate.year month=data.a_rdate.month day=data.a_rdate.day%}" role="button">취소</a>
+            <button type="submit" class="btn btn-primary">저장</button>
+        </dd>
+    </dl>
+
+    <dl class="row">
+
+    </dl>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}대량반납 등록{% endblock %}
+
+{% block content %}
+<div class="container">
+<form action="" method="post">
+    <!-- form은 html로부터 서버로 자료를 전달하기 위해 사용, action은 자료 전달할 대상 페이지. 비워있을 경우 현재 페이지로 전달 -->
+    {% csrf_token %}
+    <!-- csrf(Cross Site Request Foregery) 공격을 막기 위한 용도 -->
+    {{form.as_p}}
+    <input type="submit" value="Add" class=""btn btn-info btn-sm">
+</form>
+</div>
+{% endblock %}

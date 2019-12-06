@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}
+파일관리
+{% endblock %}
+
+{% block content %}
+
+<p></p>
+<div class="col-md-2">
+<div class="btn-group">
+    <a href="{% url 'input:file_upload' %}" class="btn btn-info">Upload</a>
+</div>
+</div>
+<p></p>
+
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td><B>#</B></td>
+            <td><B>파일명</B></td>
+            <td><B>비고</B></td>
+            <td><B>파일 생성일</B></td>
+            <td><B></B></td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for file in files %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td><a href="{{file.file.url}}">{{file.file}}</a></td>
+            <td>{{file.text}}</td>
+            <td>{{file.updated}}</a></td>
+            <td>{{file.author}}</a></td>
+        </tr>
+        {% endfor %}
+        <tbody>
+    </table>
+</div>
+
+{% endblock %}

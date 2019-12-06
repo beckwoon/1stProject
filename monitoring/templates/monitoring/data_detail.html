@@ -1,0 +1,159 @@
+{% extends "layout.html" %}
+
+{% block title %}Detail{% endblock %}
+
+{% block content %}
+{% load humanize %}
+<div class="container"></div>
+<p></p>
+
+<div class="container">
+    <a href="{% url 'monitoring:data_update' pk=object.id %}" class="btn btn-danger btn-sm">차량정보 수정</a>
+    {% if object.fwc_3pt == "글로비스" %}
+    <span class="badge badge-danger">글로비스</span>
+    {% endif %}
+    <a href="{% url 'remgt:re_cus' pk=object.id %}" class="btn btn-success btn-sm">반납관리</a>
+    {% if object.ex %}
+    <a href="{% url 'recovery:re_detail' pk=object.id %}" class="btn btn-primary btn-sm">원상회복관리</a>
+    <span class="badge badge-secondary">대상</span>
+    {% else %}
+    <a href="{% url 'recovery:re_create' pk=object.id %}" class="btn btn-primary btn-sm">원상회복관리</a>
+    <span class="badge badge-secondary">미대상</span>
+    {% endif %}
+
+</div>
+
+
+<p></p>
+
+<div class="container">
+<span style="font-size:0.8em">
+<dl class="row">
+    <dt class="col-sm-3">고유번호</dt>
+    <dd class="col-sm-9">
+        <dl class="row">
+          <dt class="col-sm-3">차대번호</dt>
+          <dd class="col-sm-9">{{object.car_id}}</dd>
+
+          <dt class="col-sm-3">대출계약번호</dt>
+          <dd class="col-sm-9">{{object.fwc_num}}</dd>
+        </dl>
+    </dd>
+
+    <dt class="col-sm-3">차량번호</dt>
+    <dd class="col-sm-9">
+      <dl class="row">
+          <dt class="col-sm-3">최초(원)번호</dt>
+          <dd class="col-sm-9">{{object.car_num1}}</dd>
+
+          <dt class="col-sm-3">반납시점</dt>
+          <dd class="col-sm-9">{{object.car_num2}}</dd>
+
+          <dt class="col-sm-3">변경 번호</dt>
+          <dd class="col-sm-9">{{object.car_num3}}</dd>
+      </dl>
+
+    <dt class="col-sm-3">차종(모델)</dt>
+    <dd class="col-sm-9">{{object.car_type}}</dd>
+
+    <dt class="col-sm-3">세부모델</dt>
+    <dd class="col-sm-9">{{object.car_model}}</dd>
+
+    <dt class="col-sm-3">연식</dt>
+    <dd class="col-sm-9">{{object.car_year}} 년</dd>
+
+    <dt class="col-sm-3">최초등록일</dt>
+    <dd class="col-sm-9">{{object.car_sdate|date:'Y-m-d'}}</dd>
+
+    <dt class="col-sm-3">차량가격</dt>
+    <dd class="col-sm-9">{{object.car_price|intcomma}}</dd>
+
+    <dt class="col-sm-3">할인가격</dt>
+    <dd class="col-sm-9">{{object.car_dc|intcomma}}</dd>
+
+    <dt class="col-sm-3">주요옵션</dt>
+    <dd class="col-sm-9">
+        <p>{{object.car_ap}}</p>
+        <p>{{object.car_ap2}}</p>
+    </dd>
+
+    <dt class="col-sm-3">반납관련정보</dt>
+    <dd class="col-sm-9">
+      <dl class="row">
+          <dt class="col-sm-3">반납일</dt>
+          <dd class="col-sm-9">{{object.a_rdate|date:'Y-m-d'}}</dd>
+          <dt class="col-sm-3">반납유형</dt>
+          <dd class="col-sm-9">{{object.a_type}}</dd>
+          <dt class="col-sm-3">반납주행거리</dt>
+          <dd class="col-sm-9">{{object.a_limm}}</dd>
+          <dt class="col-sm-3">사고내역</dt>
+          <dd class="col-sm-9">{{object.car_acd}}</dd>
+          <dt class="col-sm-3">반납지</dt>
+          <dd class="col-sm-9">{{object.a_spot}}</dd>
+          <dt class="col-sm-3">반납담당자</dt>
+          <dd class="col-sm-9">{{object.a_mgr}}</dd>
+          <dt class="col-sm-3">원상회복 유/무</dt>
+          {% if object.ex is True %}
+          <dd class="col-sm-9">Yes</dd>
+          {% else %}
+          <dd class="col-sm-9">No</dd>
+          {% endif %}
+      </dl>
+    </dd>
+
+    <dt class="col-sm-3">계약관련정보</dt>
+    <dd class="col-sm-9">
+      <dl class="row">
+          <dt class="col-sm-3">선물사</dt>
+          {% if object.fwc_3pt == "글로비스" %}
+            <span class="col-sm-2 badge badge-danger">글로비스</span>
+            <dd class="col-sm-7"></dd>
+          {% else %}
+          <dd class="col-sm-9">{{object.fwc_3pt}}</dd>
+          {% endif %}
+          <dt class="col-sm-3">잔가기준가격</dt>
+          <dd class="col-sm-9">{{object.fwc_stdprice|intcomma}}</dd>
+          <dt class="col-sm-3">계약시작일</dt>
+          <dd class="col-sm-9">{{object.fwc_sdate|date:'Y-m-d'}}</dd>
+          <dt class="col-sm-3">약정주행거리</dt>
+          <dd class="col-sm-9">{{object.fwc_limm|intcomma}}</dd>
+          <dt class="col-sm-3">상품코드</dt>
+          <dd class="col-sm-9">{{object.fwc_pr_code}}</dd>
+          <dt class="col-sm-3">거래처관리구분</dt>
+          <dd class="col-sm-9">{{object.fwc_pt_dept}}</dd>
+          <dt class="col-sm-3">이용고객</dt>
+          <dd class="col-sm-9">{{object.cus_name}}</dd>
+          <dt class="col-sm-3">고객연락처</dt>
+          <dd class="col-sm-9">{{object.cus_ctn}}</dd>
+          <dt class="col-sm-3">고객주소1</dt>
+          <dd class="col-sm-9">{{object.cus_add}}</dd>
+          <dt class="col-sm-3">고객주소2</dt>
+          <dd class="col-sm-9">{{object.cus_add2}}</dd>
+          <dt class="col-sm-3">HCS 담당자</dt>
+          <dd class="col-sm-9">{{object.fwc_pt_dept_mgr}}</dd>
+
+      </dl>
+    </dd>
+
+    <dt class="col-sm-3">비고</dt>
+    <dd class="col-sm-9">{{object.text}}</dd>
+</dl>
+</span>
+</div>
+
+
+<div class="container">
+</div>
+
+<p></p>
+
+<div class="container">
+
+        <form class="form-inline" action="{%url 'monitoring:search' %}">
+            <input class="form-control mr-sm-2" type="search" placeholder="차량번호" aria-label="Search" name="number" value="{{number}}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+        </form>
+</div>
+<p></p>
+
+{% endblock %}
