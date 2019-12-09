@@ -178,3 +178,66 @@ $ python manage.py startapp monitoring
 
 
 ----- Python anywhere 업로드 -----
+
+<concole>
+
+1. git에서 파일 업로드
+  $ git clone https://github.com/beckwoon/1stProject.git
+
+  cloning into '1stProject'...
+
+2. 프로젝트 폴더 진입
+  $ cd 1stProject
+
+3. 파이썬 설치 (가상환경 폴더 venv 만들기)
+  $ virtyalenv venv --python =python3.7
+
+4. (가상환경에서)장고 설치
+  $ pip install django==2.1
+
+5. DB 모듈 추가
+  $ pip install pymysql
+
+6. staic 파일 설정 모듈 설치
+  $ pip install boto3  => AWS S3 접속 모듈
+  $ pip install django-storages
+
+7. 기타 페키지
+  $ pip install openpyxl
+  $ pip install pandas
+  $ pip install xlrd
+
+<web app>
+8. add a new web app
+9. web framework => manual configuration (including virualenvs)
+10. python version => 3.7
+
+
+
+<WSGI 설정 - 장고 어플리케이션 기준으로 동작>
+Code:
+What your site is running
+  ~~
+  ~~
+  WSGI configuration file: ~~~ (선택)
+
+
+--
+import os
+import sys
+path = "/home/beckwoon/1stProject"
+if path not in sys.path:
+    sys.path.append(path)
+
+from django.contrib.staticfiles.handlers import StaticFilesHandler
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+application = StaticFilesHandler(get_wsgi_application())
+
+<가상환경 연결>
+Virtualnv:
+==> /home/beckwoon/1stProject/venv
+
+
+<Reload beckwoon.pythonanywhere.com>
