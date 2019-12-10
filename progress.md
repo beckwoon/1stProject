@@ -185,7 +185,7 @@ $ python manage.py startapp monitoring
 
 3) 보안그룹 구성
  => 이름 설명 추가
-   이름 : 1stProject
+   이름 : 1stProject_autoplus
    규칙추가 => 새로운 유형 추가 => HTTP 유형 => 소스위치 무관 선택
 
 4) 새 키 페어 생성 => 키 페어 다운로드
@@ -193,11 +193,11 @@ $ python manage.py startapp monitoring
 5) 인스턴트 접속 - 터미널로 접속 -
 
   5-1) 소유자만 키페어 파일을 읽을 수 잇는 권한을 부여
-    $ chmod 400 ~/desktop/dev/1stProject.pem
+    $ chmod 400 ~/Downloads/1stProject-key.pem
   5-2) 키페어 위치 이동 [~/.ssh]
-    $ mv ~/desktop/dev/1stProject.pem ~/.ssh/
+    $ mv ~/Downloads/1stProject-key.pem ~/.ssh/
   5-3) 인스턴트 접속 [ubuntu 접속]
-    $ ssh -i ~/.ssh/1stProject.pem ubuntu@[퍼블릭DNS]
+    $ ssh -i ~/.ssh/1stProject-key.pem ubuntu@[퍼블릭DNS]
 
   5-4) 서버 환경 설정
     <페키지 정보 업데이트>
@@ -206,15 +206,13 @@ $ python manage.py startapp monitoring
     $ sudo apt-get dist-upgrade
 
     <웹서버 프로그램 nginx 설치>
-    (1) nginx 안정화 최신버전 PPA(Personal Package Archive) 추가
-      $ sudo add-apt-repository ppa:nginx/stable
-    (2) PPA 저장소 업데이트
+    (1) PPA 저장소 업데이트
       $ sudo apt-get update
-    (3) nginx 설치
+    (2) nginx 설치
       $ sudo apt-get install nginx
-    (4) 버전 확인
+    (3) 버전 확인
       $ nginx -v
-    (5) 웹서버 동작 확인
+    (4) 웹서버 동작 확인
       $ systemctl status nginx
 
     * 웹 창에서 퍼블릭DNS을 입력하여 서버 구동을 확인
@@ -237,7 +235,20 @@ $ python manage.py startapp monitoring
     $ sudo apt-get install build-essential libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info libssl-dev
     (weasyprint를 위한 패키지 다수)
 
-    $ sudo apt-get install python3-dev python3-pip python3-cffi python3-venv
+    <python 3.7 업그레이드>
+    $ python3 -V
+    $ sudo apt-get install python3.7
+    $ python3.7 -V
+    $ sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1
+    $ sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
+    $ sudo update-alternatives --config python3
+    => type selection number: 2
+    python3 -V
+
+    $ sudo apt-get install python3.7-dev
+    $ sudo apt-get install python3-pip
+    $ sudo apt-get install python3-cffi
+    $ sudo apt-get install python3.7-venv
 
 6) 추가 수정 작업
   6-1) 인스톨 라이브러리 목록 추출 [PyCharm]
@@ -290,12 +301,14 @@ $ python manage.py startapp monitoring
       chdir = %(base)
       module = config.wsgi:application
       env = DJANGO_SETTINGS_MODULE=config.settings
+
       master = true
       processes = 5
+
       socket = %(base)/run/uwsgi.sock
       logto = %(base)/logs/uwsgi.log
       chown-socket = %(uid):www-data
-      chmod-socket = 600
+      chmod-socket = 660
       vacuum = true
 
     $ vim /etc/systemd/system/uwsgi.service
@@ -348,13 +361,15 @@ $ python manage.py startapp monitoring
     }
     server {
         listen 80;
-        server_name ec2-15-164-48-22.ap-northeast-2.compute.amazonaws.com;
+        server_name ec2-13-209-21-172.ap-northeast-2.compute.amazonaws.com;
         charset utf-8;
-        
+
         location / {
-        include /etc/nginx/uwsgi_params;
-        uwsgi_pass      django;
+                include         /etc/nginx/uwsgi_params;
+                uwsgi_pass      django;
         }
+    }
+
   8-17) 살장깂 점검
     $ nginx -t
 
