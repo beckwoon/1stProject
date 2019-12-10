@@ -2,8 +2,8 @@
 Description=uWSGI Emperor service
 
 [Service]
-ExecStart=/var/www/1srProject/venv/bin/uwsgi --emperor /var/www/1stProject/run
-user=django
+ExecStart=/var/www/1stProject/venv/bin/uwsgi --emperor /var/www/1stProject/run
+User=django
 Group=www-data
 Restart=on-failure
 KillSignal=SIGQUIT
