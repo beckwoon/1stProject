@@ -179,7 +179,7 @@ $ python manage.py startapp monitoring
 
 ----- Python anywhere 업로드 -----
 
-<concole>
+<console>
 
 1. git에서 파일 업로드
   $ git clone https://github.com/beckwoon/1stProject.git
@@ -190,27 +190,30 @@ $ python manage.py startapp monitoring
   $ cd 1stProject
 
 3. 파이썬 설치 (가상환경 폴더 venv 만들기)
-  $ virtyalenv venv --python =python3.7
+  $ virtualenv venv --python=python3.7
 
-4. (가상환경에서)장고 설치
+4. 가상환경 활성화
+  $ source venv/bin/activate
+
+5. (가상환경에서)장고 설치
   $ pip install django==2.1
 
-5. DB 모듈 추가
+6. DB 모듈 추가
   $ pip install pymysql
 
-6. staic 파일 설정 모듈 설치
+7. staic 파일 설정 모듈 설치
   $ pip install boto3  => AWS S3 접속 모듈
   $ pip install django-storages
 
-7. 기타 페키지
+8. 기타 페키지
   $ pip install openpyxl
   $ pip install pandas
   $ pip install xlrd
 
 <web app>
-8. add a new web app
-9. web framework => manual configuration (including virualenvs)
-10. python version => 3.7
+9. add a new web app
+10. web framework => manual configuration (including virualenvs)
+11. python version => 3.7
 
 
 
@@ -223,6 +226,8 @@ What your site is running
 
 
 --
+
+
 import os
 import sys
 path = "/home/beckwoon/1stProject"
