@@ -25,7 +25,12 @@ SECRET_KEY = 'e9f^zh#)@lm!t1b6#ex!i)k0@rodr-obrkohy2fw6q-1^=o*6t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.compute.amazonaws.com', '.beckwoon.club', 'beckwoon.club']
+ALLOWED_HOSTS = [
+    '.compute.amazonaws.com',
+    '.beckwoon.club',
+    'beckwoon.club',
+    '.beckwoon.com',
+    'beckwoon.com']
 
 
 # Application definition
