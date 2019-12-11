@@ -26,6 +26,7 @@ SECRET_KEY = 'e9f^zh#)@lm!t1b6#ex!i)k0@rodr-obrkohy2fw6q-1^=o*6t'
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    '13.209.21.172',
     '.compute.amazonaws.com',
     'test.beckwoon.club',
     '.beckwoon.club',
