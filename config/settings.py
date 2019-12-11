@@ -27,8 +27,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     '.compute.amazonaws.com',
+    'test.beckwoon.club',
     '.beckwoon.club',
     'beckwoon.club',
+    'test.beckwoon.com',
     '.beckwoon.com',
     'beckwoon.com']
 
