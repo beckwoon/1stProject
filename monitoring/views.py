@@ -46,7 +46,10 @@ def loading(request):
         if cp >= a_rdate: cp = a_rdate
     #print("@@@@@@@@@@",cp)
     #datas = Data.objects.aggregate(a_rdate = Min('a_rdate'))
-    datas = Data.objects.filter(a_rdate__gte=cp)
+
+    dp = cp + datetime.timedelta(days=1)
+
+    datas = Data.objects.filter(a_rdate__gte=dp)
     datas.delete()
 
     #a = sheet.cell(4,2).value
